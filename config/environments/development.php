@@ -23,7 +23,6 @@ Config::define('WP_DEBUG_DISPLAY', $should_display_debug);
 Config::define('WP_DEBUG_LOG', env('WP_DEBUG_LOG') ?? true);
 Config::define('WP_DISABLE_FATAL_ERROR_HANDLER', true);
 Config::define('SCRIPT_DEBUG', true);
-Config::define('DISALLOW_INDEXING', true);
 
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED & ~E_NOTICE & ~E_USER_NOTICE);
 ini_set('display_errors', $should_display_debug ? '1' : '0');

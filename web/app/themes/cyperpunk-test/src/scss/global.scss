@@ -47,6 +47,12 @@ body {
   font-family: $font-body;
 }
 
+body.admin-bar {
+  #wpadminbar {
+    position: fixed;
+  }
+}
+
 .js-motion .js-reveal {
   opacity: 0;
   transform: translate3d(0, 28px, 0);
