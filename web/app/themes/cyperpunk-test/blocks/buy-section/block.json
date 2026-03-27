@@ -1,0 +1,23 @@
+{
+  "name": "cyperpunk/buy-section",
+  "title": "Buy Section",
+  "description": "Pricing or purchase section with cards.",
+  "category": "cyperpunk-test",
+  "icon": "cart",
+  "keywords": [
+    "buy",
+    "pricing",
+    "plans"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "render.php"
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "anchor": true
+  }
+}

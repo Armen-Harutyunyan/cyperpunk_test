@@ -1,0 +1,9 @@
+.git
+.idea
+node_modules
+vendor
+web/wp
+web/app/cache
+web/app/uploads
+docker/db/init
+*.log

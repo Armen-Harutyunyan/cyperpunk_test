@@ -1,0 +1,309 @@
+<?php
+/**
+ * ACF integration helpers.
+ *
+ * @package CyperpunkTest
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Stores ACF local JSON inside the active theme.
+ *
+ * @param string $path Default path.
+ * @return string
+ */
+function cyperpunk_test_acf_json_save_path( string $path ): string {
+	unset( $path );
+
+	return get_theme_file_path( 'acf-json' );
+}
+
+add_filter( 'acf/settings/save_json', 'cyperpunk_test_acf_json_save_path' );
+
+/**
+ * Adds the theme ACF JSON directory to the load paths.
+ *
+ * @param array<int, string> $paths Existing paths.
+ * @return array<int, string>
+ */
+function cyperpunk_test_acf_json_load_paths( array $paths ): array {
+	$paths[] = get_theme_file_path( 'acf-json' );
+
+	return array_values( array_unique( $paths ) );
+}
+
+add_filter( 'acf/settings/load_json', 'cyperpunk_test_acf_json_load_paths' );
+
+/**
+ * Registers the global theme options page for shared site settings.
+ *
+ * @return void
+ */
+function cyperpunk_test_register_theme_options_page(): void {
+	if ( ! function_exists( 'acf_add_options_page' ) ) {
+		return;
+	}
+
+	acf_add_options_page(
+		array(
+			'page_title' => __( 'Theme Options', 'cyperpunk-test' ),
+			'menu_title' => __( 'Theme Options', 'cyperpunk-test' ),
+			'menu_slug'  => 'theme-options',
+			'capability' => 'edit_theme_options',
+			'redirect'   => false,
+			'position'   => 20,
+			'icon_url'   => 'dashicons-admin-generic',
+		)
+	);
+}
+
+add_action( 'acf/init', 'cyperpunk_test_register_theme_options_page' );
+
+/**
+ * Normalizes a link field value.
+ *
+ * @param mixed $link_value Raw ACF link field value.
+ * @return array{title:string,url:string,target:string}
+ */
+function cyperpunk_test_normalize_link_field( $link_value ): array {
+	if ( ! is_array( $link_value ) ) {
+		return array(
+			'title'  => '',
+			'url'    => '',
+			'target' => '',
+		);
+	}
+
+	$title  = isset( $link_value['title'] ) && is_string( $link_value['title'] ) ? $link_value['title'] : '';
+	$url    = isset( $link_value['url'] ) && is_string( $link_value['url'] ) ? $link_value['url'] : '';
+	$target = isset( $link_value['target'] ) && is_string( $link_value['target'] ) ? $link_value['target'] : '_self';
+
+	return array(
+		'title'  => $title,
+		'url'    => $url,
+		'target' => $target,
+	);
+}
+
+/**
+ * Normalizes an image field value.
+ *
+ * @param mixed $image_value Raw ACF image field value.
+ * @return array{id:int,url:string,alt:string}
+ */
+function cyperpunk_test_normalize_image_field( $image_value ): array {
+	if ( is_array( $image_value ) ) {
+		$image_id = 0;
+		$url      = isset( $image_value['url'] ) && is_string( $image_value['url'] ) ? $image_value['url'] : '';
+		$alt      = isset( $image_value['alt'] ) && is_string( $image_value['alt'] ) ? $image_value['alt'] : '';
+
+		if ( isset( $image_value['ID'] ) ) {
+			$image_id = absint( $image_value['ID'] );
+		} elseif ( isset( $image_value['id'] ) ) {
+			$image_id = absint( $image_value['id'] );
+		}
+
+		if ( 0 < $image_id && '' === $url ) {
+			$url = (string) wp_get_attachment_image_url( $image_id, 'full' );
+		}
+
+		if ( 0 < $image_id && '' === $alt ) {
+			$alt = (string) get_post_meta( $image_id, '_wp_attachment_image_alt', true );
+		}
+
+		return array(
+			'id'  => $image_id,
+			'url' => $url,
+			'alt' => $alt,
+		);
+	}
+
+	if ( is_numeric( $image_value ) ) {
+		$image_id = (int) $image_value;
+
+		return array(
+			'id'  => $image_id,
+			'url' => (string) wp_get_attachment_image_url( $image_id, 'full' ),
+			'alt' => (string) get_post_meta( $image_id, '_wp_attachment_image_alt', true ),
+		);
+	}
+
+	if ( is_string( $image_value ) ) {
+		return array(
+			'id'  => 0,
+			'url' => $image_value,
+			'alt' => '',
+		);
+	}
+
+	return array(
+		'id'  => 0,
+		'url' => '',
+		'alt' => '',
+	);
+}
+
+/**
+ * Returns attachment ID from a normalized image field or raw ACF image value.
+ *
+ * @param mixed $image_value Raw ACF image field value.
+ * @return int
+ */
+function cyperpunk_test_get_image_field_id( $image_value ): int {
+	if ( is_numeric( $image_value ) ) {
+		return absint( $image_value );
+	}
+
+	if ( is_array( $image_value ) ) {
+		if ( isset( $image_value['id'] ) ) {
+			return absint( $image_value['id'] );
+		}
+
+		if ( isset( $image_value['ID'] ) ) {
+			return absint( $image_value['ID'] );
+		}
+	}
+
+	return 0;
+}
+
+/**
+ * Bootstraps DOMUtilForWebP picture helpers when WebP Express is active.
+ *
+ * @return bool
+ */
+function cyperpunk_test_bootstrap_webp_picture_tags(): bool {
+	if ( class_exists( '\DOMUtilForWebP\PictureTags' ) ) {
+		return true;
+	}
+
+	if ( defined( 'WEBPEXPRESS_PLUGIN_DIR' ) ) {
+		$autoload_path = WEBPEXPRESS_PLUGIN_DIR . '/vendor/autoload.php';
+
+		if ( file_exists( $autoload_path ) ) {
+			require_once $autoload_path;
+		}
+	}
+
+	return class_exists( '\DOMUtilForWebP\PictureTags' );
+}
+
+/**
+ * Converts WordPress image HTML to picture markup when WebP Express is available.
+ *
+ * @param string $html Markup generated by WordPress.
+ * @return string
+ */
+function cyperpunk_test_convert_img_to_picture( string $html ): string {
+	if ( '' === trim( $html ) || ! cyperpunk_test_bootstrap_webp_picture_tags() ) {
+		return $html;
+	}
+
+	try {
+		$picture_html = \DOMUtilForWebP\PictureTags::replace( $html );
+
+		return is_string( $picture_html ) && '' !== trim( $picture_html ) ? $picture_html : $html;
+	} catch ( Throwable $exception ) {
+		if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+			error_log( 'cyperpunk_test_convert_img_to_picture: ' . $exception->getMessage() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+		}
+
+		return $html;
+	}
+}
+
+/**
+ * Renders responsive image markup with srcset/sizes and optional WebP picture sources.
+ *
+ * @param mixed $image_value Raw ACF image field value.
+ * @param array $args Render arguments.
+ * @return string
+ */
+function cyperpunk_test_render_responsive_picture( $image_value, array $args = array() ): string {
+	$defaults = array(
+		'size'          => 'full',
+		'class'         => '',
+		'sizes'         => '100vw',
+		'loading'       => 'lazy',
+		'decoding'      => 'async',
+		'fetchpriority' => '',
+		'alt'           => '',
+		'auto_sizes'    => true,
+	);
+	$args     = wp_parse_args( $args, $defaults );
+
+	$image_id = cyperpunk_test_get_image_field_id( $image_value );
+
+	if ( 0 < $image_id ) {
+		$attributes = array(
+			'class'    => sanitize_text_field( (string) $args['class'] ),
+			'sizes'    => sanitize_text_field( (string) $args['sizes'] ),
+			'loading'  => sanitize_key( (string) $args['loading'] ),
+			'decoding' => sanitize_key( (string) $args['decoding'] ),
+			'alt'      => '' !== (string) $args['alt'] ? sanitize_text_field( (string) $args['alt'] ) : (string) get_post_meta( $image_id, '_wp_attachment_image_alt', true ),
+		);
+
+		if ( '' !== (string) $args['fetchpriority'] ) {
+			$attributes['fetchpriority'] = sanitize_key( (string) $args['fetchpriority'] );
+		}
+
+		if ( true !== (bool) $args['auto_sizes'] ) {
+			add_filter( 'wp_img_tag_add_auto_sizes', '__return_false' );
+		}
+
+		$image_html = wp_get_attachment_image( $image_id, (string) $args['size'], false, $attributes );
+
+		if ( true !== (bool) $args['auto_sizes'] ) {
+			remove_filter( 'wp_img_tag_add_auto_sizes', '__return_false' );
+		}
+
+		return is_string( $image_html ) ? cyperpunk_test_convert_img_to_picture( $image_html ) : '';
+	}
+
+	$image = cyperpunk_test_normalize_image_field( $image_value );
+
+	if ( '' === $image['url'] ) {
+		return '';
+	}
+
+	$fallback_attributes = array(
+		'src'      => esc_url( $image['url'] ),
+		'alt'      => esc_attr( '' !== (string) $args['alt'] ? (string) $args['alt'] : $image['alt'] ),
+		'class'    => esc_attr( (string) $args['class'] ),
+		'loading'  => esc_attr( (string) $args['loading'] ),
+		'decoding' => esc_attr( (string) $args['decoding'] ),
+	);
+
+	if ( '' !== (string) $args['fetchpriority'] ) {
+		$fallback_attributes['fetchpriority'] = esc_attr( (string) $args['fetchpriority'] );
+	}
+
+	$parts = array();
+
+	foreach ( $fallback_attributes as $attribute_name => $attribute_value ) {
+		if ( '' === $attribute_value ) {
+			continue;
+		}
+
+		$parts[] = sprintf( '%s="%s"', $attribute_name, $attribute_value );
+	}
+
+	return sprintf( '<img %s>', implode( ' ', $parts ) );
+}
+
+/**
+ * Formats textarea-like values for output.
+ *
+ * @param mixed $value Raw field value.
+ * @return string
+ */
+function cyperpunk_test_format_text_content( $value ): string {
+	if ( ! is_string( $value ) || '' === trim( $value ) ) {
+		return '';
+	}
+
+	return wpautop( wp_kses_post( $value ) );
+}

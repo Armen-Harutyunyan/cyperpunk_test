@@ -1,0 +1,23 @@
+{
+  "name": "cyperpunk/try-section",
+  "title": "Try Section",
+  "description": "Section with feature or benefit cards.",
+  "category": "cyperpunk-test",
+  "icon": "lightbulb",
+  "keywords": [
+    "try",
+    "features",
+    "benefits"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "render.php"
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "anchor": true
+  }
+}

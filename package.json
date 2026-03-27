@@ -1,0 +1,24 @@
+{
+  "name": "cyperpunk-test",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Asset build pipeline for the Cyperpunk WordPress theme",
+  "scripts": {
+    "build": "npm run build:assets && npm run build:css && npm run build:js",
+    "build:assets": "mkdir -p web/app/themes/cyperpunk-test/assets/css web/app/themes/cyperpunk-test/assets/js && cp -R web/app/themes/cyperpunk-test/src/assets/. web/app/themes/cyperpunk-test/assets",
+    "build:css": "sass web/app/themes/cyperpunk-test/src/scss/global.scss web/app/themes/cyperpunk-test/assets/css/style.css --no-source-map --style=compressed && postcss web/app/themes/cyperpunk-test/assets/css/style.css --replace",
+    "build:js": "esbuild web/app/themes/cyperpunk-test/src/js/app.js --bundle --minify --format=iife --outfile=web/app/themes/cyperpunk-test/assets/js/app.js",
+    "watch": "chokidar \"web/app/themes/cyperpunk-test/src/**/*\" -c \"npm run build\""
+  },
+  "browserslist": [
+    "defaults"
+  ],
+  "devDependencies": {
+    "autoprefixer": "^10.4.27",
+    "chokidar-cli": "^3.0.0",
+    "esbuild": "^0.27.4",
+    "postcss": "^8.5.8",
+    "postcss-cli": "^11.0.1",
+    "sass": "^1.93.2"
+  }
+}

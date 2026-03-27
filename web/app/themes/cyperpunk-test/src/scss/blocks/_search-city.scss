@@ -1,0 +1,120 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.cy-city {
+  width: 100%;
+  background: $color-white;
+  color: $color-black;
+
+  &__container {
+    display: grid;
+    gap: 70px;
+    overflow-x: hidden;
+
+    @include tablet {
+      gap: 70px;
+    }
+  }
+
+  &__content {
+    max-width: 100%;
+
+    @include tablet {
+      max-width: 788px;
+    }
+  }
+
+  &__description {
+    margin-top: 25px;
+    max-width: 100%;
+
+    @include tablet {
+      margin-top: 25px;
+      max-width: 952px;
+    }
+
+    p {
+      color: #000000;
+    }
+  }
+
+  &__accent,
+  .cy-accent {
+    color: $color-blue;
+  }
+
+  &__gallery {
+    display: grid;
+    gap: 32px;
+    margin-left: -16px;
+    margin-right: -16px;
+
+    @include tablet {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-areas:
+				"small-top small-bottom"
+				"large large";
+      align-items: stretch;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    @include desktop {
+      grid-template-columns: minmax(0, 460px) minmax(0, 788px);
+      grid-template-areas:
+				"small-top large"
+				"small-bottom large";
+    }
+  }
+
+  &__image {
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(6% 0, 100% 0, 100% 84%, 94% 100%, 0 100%, 0 16%);
+    @include desktop {
+      max-height: 196px;
+      &.cy-city__image--large {
+        max-height: 100%;
+      }
+    }
+
+    picture {
+      height: 100%;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &:last-child {
+      img {
+        min-height: 424px;
+      }
+    }
+
+    @include tablet {
+      &--large {
+        max-width: 100%;
+      }
+
+      &:nth-child(1) {
+        grid-area: small-top;
+      }
+
+      &:nth-child(2) {
+        grid-area: small-bottom;
+      }
+
+      &--large,
+      &:nth-child(3) {
+        grid-area: large;
+      }
+    }
+  }
+
+  @include tablet {
+    padding: 70px 0;
+  }
+}

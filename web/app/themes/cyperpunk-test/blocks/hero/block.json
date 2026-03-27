@@ -1,0 +1,23 @@
+{
+  "name": "cyperpunk/hero",
+  "title": "Hero",
+  "description": "Hero block for the landing page.",
+  "category": "cyperpunk-test",
+  "icon": "cover-image",
+  "keywords": [
+    "hero",
+    "banner",
+    "landing"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "render.php"
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "anchor": true
+  }
+}

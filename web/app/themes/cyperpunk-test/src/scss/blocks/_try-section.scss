@@ -1,0 +1,227 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.cy-try {
+  position: relative;
+  width: 100%;
+  padding: 140px 0 70px;
+  background: $color-yellow;
+  color: $color-black;
+  @include tablet {
+    padding-top: 140px;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: 70px;
+    pointer-events: none;
+    background: url('../images/section_gradient.webp') center top / auto 50% repeat-x;
+  }
+
+  &__container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 40px;
+
+    @include tablet {
+      grid-template-columns: minmax(0, 44%) minmax(0, 48%);
+      gap: 40px 64px;
+      align-items: start;
+    }
+  }
+
+  &__media {
+    display: grid;
+    gap: 28px;
+
+    @include tablet {
+      padding-top: 16px;
+    }
+    @include desktop {
+      padding-top: 0;
+      width: 100%;
+      max-width: 624px;
+    }
+  }
+
+  &__product {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    picture {
+      width: 100%;
+    }
+
+    img {
+      width: 100%;
+      max-width: 460px;
+      height: auto;
+      @include desktop {
+        max-width: 100%;
+      }
+    }
+  }
+
+  &__logos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+
+    @include tablet {
+      flex-direction: column;
+    }
+
+    @include desktop {
+      flex-direction: row;
+    }
+  }
+
+  &__logo-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__logo-separator {
+    position: relative;
+    flex: 0 0 90px;
+    width: 90px;
+    height: 20px;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 100%;
+      height: 3px;
+      background: $color-black;
+      transform-origin: center;
+    }
+
+    &::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+
+  &__logo {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 56px;
+    height: auto;
+    object-fit: contain;
+
+    @include tablet {
+      max-height: 80px;
+    }
+  }
+
+  &__description {
+    margin-top: 25px;
+    max-width: 100%;
+
+    @include tablet {
+      max-width: 624px;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .cy-accent {
+      color: $color-blue;
+    }
+  }
+
+  &__list {
+    display: grid;
+    gap: 15px;
+    margin: 25px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__list-item {
+    @include roboto-regular;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    font-size: 16px;
+    line-height: 1.4;
+
+    @include tablet {
+      font-size: 18px;
+    }
+
+    picture {
+      flex: 0 0 28px;
+    }
+  }
+
+  &__list-icon {
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
+
+  &__actions {
+    margin-top: 40px;
+    @include roboto-bold;
+    font-size: 16px;
+    line-height: 100%;
+  }
+
+  &__button {
+    @include archangelsk-regular;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 194px;
+    min-height: 59px;
+    padding: 14px 24px;
+    border: 0;
+    background: $color-black;
+    color: $color-yellow;
+    font-size: 20px;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease,
+      color 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      transform: translate(-3px, -3px);
+      box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.4);
+      background: $color-white;
+      color: $color-black;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-black;
+      outline-offset: 3px;
+    }
+  }
+
+
+}

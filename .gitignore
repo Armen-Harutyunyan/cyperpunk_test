@@ -1,0 +1,46 @@
+# Application
+web/app/plugins/*
+!web/app/plugins/.gitkeep
+!web/app/plugins/advanced-custom-fields-pro/
+!web/app/plugins/advanced-custom-fields-pro/**
+# Ignore Composer-installed mu-plugin directories; single-file mu-plugins are tracked intentionally
+web/app/mu-plugins/*/
+web/app/themes/twentytwentyfive/
+web/app/upgrade
+web/app/uploads/wpcf7_uploads/*
+!web/app/uploads/wpcf7_uploads/.htaccess
+web/app/cache/*
+
+# WordPress
+web/wp
+web/.htaccess
+!web/.htaccess
+
+# Logs
+*.log
+
+# IDE / OS
+.idea/
+.vscode/
+.fleet/
+.DS_Store
+
+# Dotenv
+.env
+.env.*
+!.env.example
+
+# Composer
+/vendor
+auth.json
+
+# Node
+node_modules
+
+# PHPUnit/Pest
+phpunit.xml
+.phpunit.result.cache
+.phpunit.cache
+
+# WP-CLI
+wp-cli.local.yml

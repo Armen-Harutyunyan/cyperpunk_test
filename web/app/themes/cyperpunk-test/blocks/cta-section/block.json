@@ -1,0 +1,23 @@
+{
+  "name": "cyperpunk/cta-section",
+  "title": "CTA Section",
+  "description": "Call to action section with buttons and optional image.",
+  "category": "cyperpunk-test",
+  "icon": "megaphone",
+  "keywords": [
+    "cta",
+    "button",
+    "action"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "render.php"
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "anchor": true
+  }
+}

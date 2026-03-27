@@ -1,0 +1,23 @@
+{
+  "name": "cyperpunk/search-city",
+  "title": "Search City",
+  "description": "City search or city list section.",
+  "category": "cyperpunk-test",
+  "icon": "location-alt",
+  "keywords": [
+    "city",
+    "search",
+    "locations"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "render.php"
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "anchor": true
+  }
+}

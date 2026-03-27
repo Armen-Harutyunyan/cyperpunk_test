@@ -1,0 +1,74 @@
+services:
+  db:
+    image: mariadb:10.11
+    container_name: cyperpunk-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: test_cyberpank
+      MYSQL_USER: cyperpunk
+      MYSQL_PASSWORD: cyperpunk
+      MYSQL_ROOT_PASSWORD: root
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -h localhost -uroot -proot --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: cyperpunk-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_NAME: test_cyberpank
+      DB_USER: cyperpunk
+      DB_PASSWORD: cyperpunk
+      DB_PREFIX: wp_
+      WP_ENV: development
+      WP_ENVIRONMENT_TYPE: local
+      WP_HOME: http://localhost:${APP_PORT:-8080}
+      WP_SITEURL: http://localhost:${APP_PORT:-8080}/wp
+      AUTH_KEY: docker-auth-key-cyperpunk-test
+      SECURE_AUTH_KEY: docker-secure-auth-key-cyperpunk-test
+      LOGGED_IN_KEY: docker-logged-in-key-cyperpunk-test
+      NONCE_KEY: docker-nonce-key-cyperpunk-test
+      AUTH_SALT: docker-auth-salt-cyperpunk-test
+      SECURE_AUTH_SALT: docker-secure-auth-salt-cyperpunk-test
+      LOGGED_IN_SALT: docker-logged-in-salt-cyperpunk-test
+      NONCE_SALT: docker-nonce-salt-cyperpunk-test
+    volumes:
+      - ./:/var/www/html
+      - composer_cache:/tmp/composer-cache
+    healthcheck:
+      test: ["CMD-SHELL", "php -v >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: cyperpunk-nginx
+    restart: unless-stopped
+    depends_on:
+      app:
+        condition: service_started
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - ./:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
+volumes:
+  db_data:
+  composer_cache:

@@ -1,0 +1,135 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.cy-site-footer {
+  margin-top: 0;
+  color: $color-black;
+
+  &__top {
+    background: $color-white;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    padding-top: 40px;
+    padding-bottom: 25px;
+
+    @include tablet {
+      gap: 32px;
+      padding-top: 28px;
+      padding-bottom: 26px;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    @include desktop {
+      gap: 32px;
+      padding-top: 14px;
+      padding-bottom: 14px;
+    }
+  }
+
+  &__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+
+    @include tablet {
+      gap: 32px;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  &__logo-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  &__logo {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+
+    @include tablet {
+      max-width: 320px;
+    }
+
+    @include desktop {
+      max-width: 296px;
+    }
+  }
+
+  &__partner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__partner-logo {
+    display: block;
+    width: 100%;
+    max-width: 116px;
+    height: auto;
+
+    @include desktop {
+      max-width: 172px;
+    }
+  }
+
+  &__links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+    @include tablet {
+      gap: 20px;
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+
+    @include desktop {
+      gap: 32px;
+    }
+  }
+
+
+  &__link {
+    @include roboto-regular;
+    color: $color-black;
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 1.2;
+
+    @include desktop {
+      font-size: 18px;
+    }
+  }
+
+  &__bottom {
+    padding: 10px 0;
+    background: $color-black;
+  }
+
+  &__legal {
+    @include roboto-regular;
+    margin: 0;
+    color: $color-white;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.4;
+
+    @include desktop {
+      font-size: 12px;
+    }
+  }
+}
