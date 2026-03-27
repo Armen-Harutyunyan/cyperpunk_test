@@ -23,15 +23,15 @@
     "enable-redirection-to-webp-realizer": true,
     "jpeg-encoding": "auto",
     "jpeg-enable-near-lossless": true,
-    "jpeg-near-lossless": 60,
+    "jpeg-near-lossless": 100,
     "quality-auto": false,
     "max-quality": 80,
-    "quality-specific": 70,
+    "quality-specific": 100,
     "png-encoding": "auto",
     "png-enable-near-lossless": true,
-    "png-near-lossless": 60,
-    "png-quality": 85,
-    "alpha-quality": 80,
+    "png-near-lossless": 80,
+    "png-quality": 1,
+    "alpha-quality": 100,
     "converters": [
         {
             "converter": "cwebp",
@@ -43,7 +43,7 @@
                 "low-memory": true,
                 "command-line-options": ""
             },
-            "working": true
+            "working": false
         },
         {
             "converter": "vips",
@@ -88,7 +88,7 @@
         },
         {
             "converter": "imagick",
-            "working": false
+            "working": true
         },
         {
             "converter": "gmagick",
@@ -159,7 +159,7 @@
         "canRunTestScriptInWOD": null,
         "canRunTestScriptInWOD2": null
     },
-    "document-root": "/Users/armenharutyunyan/WebstormProjects/cyperpunk_test/web",
+    "document-root": "/var/www/html/web",
     "paths-used-in-htaccess": {
         "wod-url-path": "app/plugins/webp-express/wod/webp-on-demand.php"
     }

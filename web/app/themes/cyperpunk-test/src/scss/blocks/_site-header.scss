@@ -57,8 +57,9 @@
   &__socials {
     width: 100%;
 
-    @include desktop {
-      width: auto;
+    @include tablet {
+      flex: 1 1 auto;
+      min-width: 0;
     }
   }
 

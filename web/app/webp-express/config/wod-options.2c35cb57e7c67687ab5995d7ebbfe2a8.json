@@ -119,14 +119,14 @@
             ],
             "jpeg": {
                 "encoding": "auto",
-                "quality": 70,
-                "near-lossless": 60
+                "quality": 100,
+                "near-lossless": 100
             },
             "png": {
                 "encoding": "auto",
-                "quality": 85,
-                "near-lossless": 60,
-                "alpha-quality": 80
+                "quality": 1,
+                "near-lossless": 80,
+                "alpha-quality": 100
             },
             "metadata": "none",
             "log-call-arguments": true

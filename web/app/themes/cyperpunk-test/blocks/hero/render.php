@@ -9,6 +9,7 @@ $heading     = (string) get_field( 'title' );
 $button_text = (string) get_field( 'button_text' );
 $button_link = cyperpunk_test_normalize_link_field( get_field( 'button_link' ) );
 $hero_images = cyperpunk_test_collect_repeater_images( get_field( 'images_list' ), 'img' );
+$hero_size   = wp_is_mobile() ? '1536x1536' : 'cyperpunk-hero';
 
 if ( cyperpunk_test_is_empty( array( $heading, $button_text, $hero_images ) ) ) {
 	return;
@@ -24,10 +25,10 @@ if ( cyperpunk_test_is_empty( array( $heading, $button_text, $hero_images ) ) ) 
 					echo cyperpunk_test_render_responsive_picture(
 						$image,
 						array(
-							'size'          => 'cyperpunk-hero',
+							'size'          => $hero_size,
 							'class'         => 'cyperpunk-hero__slide-media',
-							'sizes'         => '(max-width: 767px) 320vw, (max-width: 1279px) 140vw, 100vw',
-							'loading'       => 'eager',
+							'sizes'         => '(max-width: 767px) 100vw, (max-width: 1279px) 120vw, 100vw',
+							'loading'       => 0 === $index ? 'eager' : 'lazy',
 							'fetchpriority' => 0 === $index ? 'high' : '',
 							'alt'           => '',
 							'auto_sizes'    => false,

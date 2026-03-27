@@ -27,6 +27,7 @@ function cyperpunk_test_setup(): void {
 	add_image_size( 'cyperpunk-card-sm', 460, 0, false );
 	add_image_size( 'cyperpunk-card-lg', 788, 0, false );
 	add_image_size( 'cyperpunk-section-half', 960, 0, false );
+	add_image_size( 'cyperpunk-hero-md', 1440, 0, false );
 	add_image_size( 'cyperpunk-hero', 1920, 0, false );
 	add_image_size( 'cyperpunk-logo', 220, 0, false );
 }
